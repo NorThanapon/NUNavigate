@@ -1,0 +1,59 @@
+.data-content {
+    padding:5px;
+}
+
+.list {
+    margin:0 !important;
+}
+
+.list li {
+    border-radius: .3em;
+    margin-top:6px;
+    border: solid 1px #AAA;
+}
+
+#search-route-panel{
+    padding:.4em;
+    background-color:black;
+}
+
+#search-route-fieldcontainer {
+    margin:0;
+    padding:0;
+    width:83%;
+    float:left;
+    position:relative;
+    text-align:left;
+    border:none;
+}
+#search-route-swapcontainer {
+    width:14%;
+    float:right;
+    padding:0;
+    margin:0;
+    position:relative;
+    text-align:center;
+    vertical-align:middle;
+}
+#btn-swap-places {
+    height:40px;
+    width:40px;
+    display:block;
+    background-image:url(../images/btn-bg-swap.png);
+}
+#txt-start-place, #txt-end-place {
+    padding-left:15%;
+    width:84%;
+}
+#lbl-txt-start-place, #lbl-txt-end-place {
+    margin-top: 10px;
+    margin-left: 1px;
+    position:absolute;
+    float:left;
+}
+
+#search-route-starred, #search-route-recent{
+    margin-top:15px;
+}
+
+
