@@ -4,14 +4,22 @@ $(document).bind("mobileinit",
                 });
 
 var menuStatus;
+const NU_EVANSTON = "42.0575,-87.6755";
+var overflow =  document.documentElement.style.overflow;
 function toggleMenu() {
     
             if(menuStatus != true){
-                
+                if (navigator.geolocation) {
+      
+                      // request the device's current position 
+                    navigator.geolocation.getCurrentPosition(geoMenuSuccess, geoMenuFailure);
+                }
                 $(".ui-page-active").animate({
                         left: "260px",
                   }, 300, function(){
                     menuStatus = true;
+                    overflow =  document.documentElement.style.overflow;
+                    document.documentElement.style.overflow = 'hidden';
                     $(".ui-page-active").addClass("menu-active");
                     $(".ui-page-active").removeClass("menu-inactive");
                     $(".menu-page-mask").removeClass("hidden");
@@ -22,6 +30,7 @@ function toggleMenu() {
                     $(".ui-page-active").animate({
                     left: "-260px",
                     }, 300, function(){
+                      document.documentElement.style.overflow = overflow;
                       menuStatus = false;
                       $(".ui-page-active").addClass("menu-inactive");
                       $(".ui-page-active").removeClass("menu-active");
@@ -46,6 +55,7 @@ $(function(){
     // Show menu
     $("a.showMenu").click(toggleMenu);
     $("div.menu-page-mask").click(toggleMenu);
+    navigator.geolocation.getCurrentPosition(geoMenuSuccess, geoMenuFailure);
 /*
 
     $('#menu, .pages').live("swipeleft", function(){
@@ -89,3 +99,47 @@ $(function(){
     });
 */
 });
+
+//-----------------------------------------------------------------
+// This gets called if the user's position is successfully obtained
+//-----------------------------------------------------------------
+function geoMenuSuccess(position) {
+   var lat = position.coords.latitude;
+   var lon = position.coords.longitude;
+   showMap(lat + "," + lon, "purple", "o");
+}
+
+
+//-----------------------------------------------------------------
+// This gets called if the browser failed to obtain the position
+// error.code values
+//   1: permission denied
+//   2: position not available
+//   3: request timeout
+//-----------------------------------------------------------------
+function geoMenuFailure(error) {
+   //alert("Geolocation error (" + error.code + ")" );
+   showMap(NU_EVANSTON, "green", "NU");
+}
+
+
+//-----------------------------------------------------------------
+// Show map uses the Google static image API to display a map on
+// the screen with the user's current position
+//-----------------------------------------------------------------
+function showMap(position, color, label) {
+   var marker = ("color:" + color + "|" +
+                 "label:" + label + "|" +
+                 position);
+   
+   var url = ("http://maps.google.com/maps/api/staticmap?" +
+              "center=" + position + "&" +
+              "size=220x150&" +
+              "maptype=roadmap&" +
+              "markers=" + marker + "&" +
+              "zoom=" + 16 + "&" +
+              "randomkey=" + Math.random() + "&" +
+              "sensor=true");
+   var img = document.getElementById("menu-map");
+   img.src = url;
+}

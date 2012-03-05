@@ -4,12 +4,15 @@
   <title></title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta charset="utf-8">
 
   <!-- iPad/iPhone specific css below, add after your main css >
-  <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
-  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
+  <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
+   <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="css/iphone.css" type="text/css" />
   -->
+ 		
+  
   <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
   <!-- Frameworks -->
   <link rel="stylesheet" href="frameworks/jquery/jquery.mobile.css" />
@@ -18,6 +21,8 @@
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.mobile.js"></script>
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.animate-enhanced.js"></script>
   <!-- End Frameworks -->
+  <link rel="stylesheet" href="css/iphone.css" type="text/css" />
+  <link rel="stylesheet" href="css/menu.css" />
   <link rel="stylesheet" href="css/default.css" />
   <link rel="stylesheet" href="css/jquery.mobile.custom.css" />
   <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.menu.js"></script>
@@ -42,7 +47,8 @@
     }
     */
 	
-    function onBodyLoad(){		
+    function onBodyLoad(){
+       
       document.addEventListener("deviceready", onDeviceReady, false);
     }
 	
@@ -51,25 +57,51 @@
       see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
       for more details -jm */
     function onDeviceReady(){
-
     }
     
   </script>
 </head>
 <body onload="onBodyLoad()">
-  
+  <!-- menu -->
   <div id="menu">
-	<div id="memberDetails">
-		<h3><span>Welcome,</span><br /> <em>John Doe</em></h3>
-	</div>
-
-	<ul>
-		<li class="active"><a href="#home" class="contentLink">Dashboard <span class="icon"></span></a></li>
-		<li><a href="#page1" class="contentLink">Subpage 1 <span class="icon"></span></a></li>
-		<li><a href="#page2" class="contentLink">Subpage 2 <span class="icon"></span></a></li>
-		<li><a href="#page3" class="contentLink">Subpage 3 <span class="icon"></span></a></li>
-	</ul>
-</div>
+    <div class="menu-divider">
+      Navigator
+    </div>
+    <ul>
+      <li class="active">
+	<a href="#" class="contentLink">Search Route<span class="icon"></span></a>
+      </li>
+      <li>
+	<a href="#" class="contentLink">Current Location
+	  <div id="menu-currentlocation-map">
+	    <img id="menu-map" alt="map">
+	  </div>
+	</a>
+      </li>
+    </ul>
+    <div class="menu-divider">
+      Routes
+    </div>
+    <ul>
+      <li>
+	<a href="#" class="contentLink">Starred Routes<span class="icon"></span></a>
+      </li>
+      <li>
+	<a href="#" class="contentLink">Recent Routes<span class="icon"></span></a>
+      </li>
+    </ul>
+    <div class="menu-divider">
+      Places
+    </div>
+    <ul>
+      <li>
+	<a href="#" class="contentLink">Starred Places<span class="icon"></span></a>
+      </li>
+      <li>
+	<a href="#" class="contentLink">Recent Places<span class="icon"></span></a>
+      </li>
+    </ul>
+  </div> <!-- end menu -->
   
   <!-- search-route page -->
   <div data-role="page"  id="search-route">
