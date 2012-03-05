@@ -16,9 +16,11 @@
   <script type="text/javascript" charset="utf-8" src="frameworks/phonegap-1.4.1.js"></script>
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.js"></script>
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.mobile.js"></script>
+  <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.animate-enhanced.js"></script>
   <!-- End Frameworks -->
   <link rel="stylesheet" href="css/default.css" />
   <link rel="stylesheet" href="css/jquery.mobile.custom.css" />
+  <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.menu.js"></script>
   <script type="text/javascript">
     // If you want to prevent dragging, uncomment this section
     /*
@@ -49,16 +51,30 @@
       see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
       for more details -jm */
     function onDeviceReady(){
-      
+
     }
     
   </script>
 </head>
 <body onload="onBodyLoad()">
+  
+  <div id="menu">
+	<div id="memberDetails">
+		<h3><span>Welcome,</span><br /> <em>John Doe</em></h3>
+	</div>
+
+	<ul>
+		<li class="active"><a href="#home" class="contentLink">Dashboard <span class="icon"></span></a></li>
+		<li><a href="#page1" class="contentLink">Subpage 1 <span class="icon"></span></a></li>
+		<li><a href="#page2" class="contentLink">Subpage 2 <span class="icon"></span></a></li>
+		<li><a href="#page3" class="contentLink">Subpage 3 <span class="icon"></span></a></li>
+	</ul>
+</div>
+  
   <!-- search-route page -->
   <div data-role="page"  id="search-route">
     <div data-role="header" data-position="fixed">
-      <a href="#">Menu</a>
+      <a href="#" class="showMenu">Menu</a>
       <h1>Search Route</h1>
       <a href="#" data-theme="g">Go!</a>
     </div><!-- end header -->
@@ -76,26 +92,82 @@
     </div><!-- end search-route-panel -->
     <div data-role="content" class="data-content">
       <div id="search-route-starred">
-	<label id="lbl-search-route-starred">Starred Routes</label>
-	<ul class="list lst-starred-route" data-role="listview"  id="lst-search-route-starred">
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
+	<label id="lbl-search-route-starred">
+	  <span><img alt="starred" src="images/inline-starred.png" class="icon-inline"/></span>
+	  <span>Starred Routes</span>
+	</label>
+	<ul class="list lst-route list-route-starred" data-role="listview"  id="lst-search-route-starred">
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
+	      <span class="lst-route-stat">
+		<img alt="outdoor" src="images/list-outdoor.png" />
+		<img alt="elevator" src="images/list-elevator.png" />
+		<img alt="stair" src="images/list-stair.png" />
+	      </span>
+	      M128 - Technological Institute
+	      <br />
+	      Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pancoe Life S...
+	    </a>
+	  </li>
 	</ul>
       </div><!-- end search-route-starred -->
       <div id="search-route-recent">
-	<label id="lbl-search-route-recent">Recent Routes</label>
-	<ul class="list lst-starred-route" data-role="listview"  id="lst-search-route-recent">
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
-	  <li><a href="#">hello</a></li>
+	<label id="lbl-search-route-recent">
+	  <span><img alt="recent" src="images/inline-recent.png" class="icon-inline"/></span>
+	  <span>Recent Routes</span>
+	</label>
+	<ul class="list lst-route list-route-recent" data-role="listview"  id="lst-search-route-recent">
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
+	      <div class="lst-recent-date">2<br />min</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
+	      <div class="lst-recent-date">10<br />hr</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
+	      <div class="lst-recent-date">5<br />day</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
+	      <div class="lst-recent-date">Jan<br />2</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
 	</ul>
       </div><!-- end search-route-recent -->
     </div><!-- end content -->
+    <div class="menu-page-mask hidden">
+      <img src="images/menu-back.png" alt="back" />
+    </div>
   </div><!-- end search-route page -->
   
 </body>
