@@ -2,6 +2,13 @@ body {
     
     background:#5a5959;
 }
+
+#menu {
+    width:260px !important;
+    overflow:hidden !important;
+    height:460px !important;
+}
+
 #menu ul{
     margin:0;padding:0;
     width:inherit;
@@ -56,4 +63,17 @@ li.active a span.icon{
     width:220px;
     padding-left:10px;
     padding-right:10px;
+}
+
+
+.menu-page-mask {
+    position:absolute;
+    top:0;
+    padding-left:20px;
+    width:70px;
+    height:100%;
+    z-index:10000;
+    background-color:rgba(0,0,0,0.7);
+    line-height:460px;
+    vertical-align:middle;
 }

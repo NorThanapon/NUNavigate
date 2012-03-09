@@ -19,13 +19,16 @@
   <script type="text/javascript" charset="utf-8" src="frameworks/phonegap-1.4.1.js"></script>
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.js"></script>
   <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.mobile.js"></script>
-  <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.animate-enhanced.js"></script>
+  <!-- <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.animate-enhanced.js"></script> -->
+  <script type="text/javascript" charset="utf-8" src="frameworks/slides.min.jquery.js"></script>
   <!-- End Frameworks -->
   <link rel="stylesheet" href="css/iphone.css" type="text/css" />
   <link rel="stylesheet" href="css/menu.css" />
+  <link rel="stylesheet" href="css/slides.css" />
   <link rel="stylesheet" href="css/default.css" />
   <link rel="stylesheet" href="css/jquery.mobile.custom.css" />
   <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.menu.js"></script>
+  <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.js"></script>
   <script type="text/javascript">
     // If you want to prevent dragging, uncomment this section
     /*
@@ -48,8 +51,8 @@
     */
 	
     function onBodyLoad(){
-       
       document.addEventListener("deviceready", onDeviceReady, false);
+      
     }
 	
     /* When this function is called, PhoneGap has been initialized and is ready to roll */
@@ -57,11 +60,58 @@
       see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
       for more details -jm */
     function onDeviceReady(){
+      bindItemDeletingHandler();
+      $('#card-view').on('pageshow',function (event, ui) {
+	var previousPage = ui.prevPage;
+	//var previousPage = $('.ui-prevPage');
+	var pPageId = previousPage.attr('id');
+	$('.btn-nav-back').attr('href','#'+pPageId);
+      });
+      
+      $('#camera-view').on('pageshow', function (event, ui) {
+	console.log('test');
+	navigator.camera.getPicture(onCameraSuccess, onCameraFail, { quality: 50, 
+    destinationType: Camera.DestinationType.FILE_URI }); 
+      });
+      
+      function onCameraSuccess(imageURI) {
+        var image = document.getElementById('camera-image');
+        image.src = imageURI;
+      }
+
+      function onCameraFail(message) {
+        alert('Failed because: ' + message);
+      }
+      
+      $("#slides").slides({
+	animationComplete: function(current) {
+	  //console.log(current);
+		if(current == 1){
+		  //console.log($('.prev'));
+		  $('.prev').addClass('hidden');
+		  $('.next').removeClass('hidden');
+		}
+		else if(current == 4){
+		  //console.log($('.prev'));
+		  $('.prev').removeClass('hidden');
+		  $('.next').addClass('hidden');
+		}
+		else{
+		  //console.log($('.prev'));
+		  $('.prev').removeClass('hidden');
+		  $('.next').removeClass('hidden');
+		}
+	},
+	bigTarget : true
+      });
+      
+      
     }
     
   </script>
 </head>
 <body onload="onBodyLoad()">
+  
   <!-- menu -->
   <div id="menu">
     <div class="menu-divider">
@@ -69,7 +119,7 @@
     </div>
     <ul>
       <li class="active">
-	<a href="#" class="contentLink">Search Route<span class="icon"></span></a>
+	<a href="#search-route" class="contentLink">Search Route<span class="icon"></span></a>
       </li>
       <li>
 	<a href="#" class="contentLink">Current Location
@@ -84,10 +134,10 @@
     </div>
     <ul>
       <li>
-	<a href="#" class="contentLink">Starred Routes<span class="icon"></span></a>
+	<a href="#starred-routes" class="contentLink">Starred Routes<span class="icon"></span></a>
       </li>
       <li>
-	<a href="#" class="contentLink">Recent Routes<span class="icon"></span></a>
+	<a href="#recent-routes" class="contentLink">Recent Routes<span class="icon"></span></a>
       </li>
     </ul>
     <div class="menu-divider">
@@ -95,20 +145,21 @@
     </div>
     <ul>
       <li>
-	<a href="#" class="contentLink">Starred Places<span class="icon"></span></a>
+	<a href="#starred-places" class="contentLink">Starred Places<span class="icon"></span></a>
       </li>
       <li>
-	<a href="#" class="contentLink">Recent Places<span class="icon"></span></a>
+	<a href="#recent-places" class="contentLink">Recent Places<span class="icon"></span></a>
       </li>
     </ul>
   </div> <!-- end menu -->
+  
   
   <!-- search-route page -->
   <div data-role="page"  id="search-route">
     <div data-role="header" data-position="fixed">
       <a href="#" class="showMenu">Menu</a>
       <h1>Search Route</h1>
-      <a href="#" data-theme="g">Go!</a>
+      <a href="#select-route" data-theme="g">Go!</a>
     </div><!-- end header -->
     <div class="ui-bar" id="search-route-panel">
       <div id="search-route-fieldcontainer">
@@ -130,7 +181,9 @@
 	</label>
 	<ul class="list lst-route list-route-starred" data-role="listview"  id="lst-search-route-starred">
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
 	      <span class="lst-route-stat">
 		<img alt="elevator" src="images/list-elevator.png" />
@@ -141,7 +194,9 @@
 	    </a>
 	  </li>
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
 	      <span class="lst-route-stat">
 		<img alt="outdoor" src="images/list-outdoor.png" />
@@ -160,7 +215,9 @@
 	</label>
 	<ul class="list lst-route list-route-recent" data-role="listview"  id="lst-search-route-recent">
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
 	      <div class="lst-recent-date">2<br />min</div>
 		M128 - Technological Institute
@@ -169,7 +226,9 @@
 	    </a>
 	  </li>
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
 	      <div class="lst-recent-date">10<br />hr</div>
 	      <span class="lst-route-stat">
@@ -181,7 +240,9 @@
 	    </a>
 	  </li>
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
 	      <div class="lst-recent-date">5<br />day</div>
 		M128 - Technological Institute
@@ -190,7 +251,9 @@
 	    </a>
 	  </li>
 	  <li>
-	    <a href="#" class="lst-route-content">
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
 	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon"/>
 	      <div class="lst-recent-date">Jan<br />2</div>
 		M128 - Technological Institute
@@ -206,5 +269,431 @@
     </div>
   </div><!-- end search-route page -->
   
+  <!-- select-route page -->
+  <div data-role="page" id="select-route">
+    <div data-role="header" data-position="fixed">
+      <a href="#search-route" data-transition="reverse slide" >Back</a>
+      <h1>Select Route</h1>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div class="ui-bar" id="select-route-desc">
+	<fieldset class="ui-grid-a">
+	  <div class="ui-block-a">
+	    Start:   
+	  </div>	 
+	  <div class="ui-block-b" id="select-route-desc-start">
+	    M128 - Technological Institute 
+	  </div>
+	  <div class="ui-block-a">
+	    End:   
+	  </div>
+	  <div class="ui-block-b" id="select-route-desc-end">
+	    Abbott Auditorium - Pance Life Science Center  
+	  </div>  
+	</fieldset>
+      </div><!-- end select-route-desc -->
+      <br />
+      <label id="select-route-inst">
+	  <span><img alt="starred" src="images/inline-alternative.png" class="icon-inline"/></span>
+	  <span>There are <span id="alt-num-routes">3</span> Possible Routes</span>
+      </label>
+      <ul class="list" data-role="listview"  id="lst-alt-route">
+	<li>
+	  <a href="#card-view" class="lst-alt-content">
+	      <span class="lst-route-stat">
+		<img alt="elevator" src="images/list-elevator.png" />
+	      </span>
+	      <span class="lst-alt-num">Rt.1:</span>
+	      <span class="lst-alt-detail"><strong>4 minutes </strong>(3 items)</span>
+	    </a>
+	</li>
+	<li>
+	  <a href="#card-view" class="lst-alt-content">
+	      <span class="lst-route-stat">
+	      </span>
+	      <span class="lst-alt-num">Rt.2:</span>
+	      <span class="lst-alt-detail"><strong>6 minutes </strong>(7 items)</span>
+	    </a>
+	</li>
+	<li>
+	  <a href="#card-view" class="lst-alt-content">
+	      <span class="lst-route-stat">
+		<img alt="outdoor" src="images/list-outdoor.png" />
+		<img alt="stair" src="images/list-stair.png" />
+	      </span>
+	      <span class="lst-alt-num">Rt.2:</span>
+	      <span class="lst-alt-detail"><strong>8 minutes </strong>(10 items)</span>
+	    </a>
+	</li>
+      </ul>
+    </div><!-- end content -->
+  </div><!-- end select-route page -->
+  
+  
+  <!-- card-view page -->
+  <div data-role="page" id="card-view">
+    <div data-role="header" data-position="fixed" data-id="navi-header">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Card View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="slides">
+	<div class="slides_container">
+	  <div class="slide">
+	    <a href="#">
+	      <img src="images/4.JPG" width="270" height="320" alt="Slide 1">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>1/4 Exit the library</p>
+	    </div>
+	    <div class="caption min" >
+	      <p>1min</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="images/1.JPG" width="270" height="320" alt="Slide 2">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>2/4: Walk straight to Tech Building</p>
+	    </div>
+	    <div class="caption min" >
+	      <p>30s</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="images/3.JPG" width="270" height="320" alt="Slide 3">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>3/4 Take the "Exit" door in the front</p>
+	    </div>
+	    <div class="caption min" >
+	      <p>1min</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="images/2.JPG" width="270" height="320" alt="Slide 4">
+	    </a>
+	    <div class="caption" style="bottom:0; height:45px">
+	      <p>4/4 Go straight, the destination is at the end of the corridor</p>
+	    </div>
+	    <div class="caption min" >
+	      <p>2min</p>
+	    </div>
+	  </div>
+	</div>
+	<a href="#" class="prev hidden"><img src="img/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
+	<a href="#" class="next"><img src="img/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+      </div>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-card ui-btn-active ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- list-view page -->
+  <div data-role="page" id="list-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>List View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <ul class="list" data-role="listview"  id="lst-alt-route">
+	<li>
+	  1. Exit the library (1min)
+	</li>
+        <li>
+	   2. Walk straight to Tech Building (30s)
+	</li>
+        <li>
+	   3. Take the "Exit" door in the front (1min)
+	</li>
+        <li>
+	   4. Go straight, the destination is at the end of the corridor (2min)
+	</li>
+       </ul>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-list ui-btn-active ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- map-view page -->
+  <div data-role="page" id="map-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Map View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="map-image" data-scroll="true">
+	<img src="images/tech_floor1_pt.gif"/>
+      </div>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list  ui-state-persist">List View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-map ui-btn-active ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- camera-view page -->
+  <div data-role="page" id="camera-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Camera View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="camera-content"><img id="camera-image" width="320" height="480"/></div>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list  ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-camera ui-btn-active ui-state-persist">Camera</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+    <!-- starred-routes page -->
+  <div data-role="page"  id="starred-routes">
+    <div data-role="header" data-position="fixed">
+      <a href="#" class="showMenu">Menu</a>      
+      <h1>Starred Routes</h1>      
+      <a id="starred-routes-btn-edit" href="#" onclick="editList(this.id, 'starred-route-starred');">Edit</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="starred-route-starred">	
+	<ul class="list lst-route list-route-starred" data-role="listview"  id="lst-search-route-starred">
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
+	      <span class="lst-route-stat">
+		<img alt="elevator" src="images/list-elevator.png" />
+	      </span>
+	      M128 - Technological Institute
+	      <br />
+	      Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>	  
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>
+	      <span class="lst-route-stat">
+		<img alt="outdoor" src="images/list-outdoor.png" />
+	      </span>	
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pancoe Life S...
+	    </a>
+	  </li>
+	</ul>
+      </div><!-- end starred-route-starred -->  
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#" data-icon="custom" class="tabbar-star ui-btn-active ui-state-persist">Starred Routes</a></li>
+	  <li><a href="#recent-routes" data-transition="none" data-icon="custom" class="tabbar-recent ui-state-persist">Recent Routes</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+    <div class="menu-page-mask hidden">
+      <img src="images/menu-back.png" alt="back" />
+    </div>
+  </div><!-- end starred-route -->
+  
+  
+  <!--recent-routes page -->
+  <div data-role="page"  id="recent-routes">
+    <div data-role="header" data-position="fixed">
+      <a href="#" class="showMenu">Menu</a>      
+      <h1>Recent Routes</h1>      
+      <a id="recent-routes-btn-edit" href="#" onclick="editList(this.id, 'recent-route-recent');">Edit</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="recent-route-recent">
+	<ul class="list lst-route list-route-recent" data-role="listview"  id="lst-search-route-recent">
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">2<br />min</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">10<br />hr</div>
+	      <span class="lst-route-stat">
+		<img alt="stair" src="images/list-stair.png" />
+	      </span>	
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">5<br />day</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#card-view" class="lst-route-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">Jan<br />2</div>
+		M128 - Technological Institute
+		<br />
+		Abbott Audi... - Pance Life S...
+	    </a>
+	  </li>
+	</ul>
+      </div><!-- end recent-route-recent -->
+    </div><!-- end content -->
+    <div data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#starred-routes" data-transition="none" data-icon="custom" class="tabbar-star ui-state-persist">Starred Routes</a></li>
+	  <li><a href="#"  data-icon="custom" class="tabbar-recent ui-btn-active ui-state-persist">Recent Routes</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+    <div class="menu-page-mask hidden">
+      <img src="images/menu-back.png" alt="back" />
+    </div>
+  </div><!-- end recent-routes -->
+  
+  
+  <!-- starred-places page -->
+  <div data-role="page"  id="starred-places">
+    <div data-role="header" data-position="fixed">
+      <a href="#" class="showMenu">Menu</a>      
+      <h1>Starred Places</h1>      
+      <a id="starred-places-btn-edit" href="#" onclick="editList(this.id, 'starred-place-starred');">Edit</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="starred-place-starred">	
+	<ul class="list lst-route list-route-starred" data-role="listview"  id="lst-search-route-starred">
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#" class="lst-place-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>	      
+	      M128 - Technological Institute	      
+	    </a>
+	  </li>	  
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#" class="lst-place-content">
+	      <img alt="starred" src="images/list-starred.png" class="ui-li-icon lst-icon lst-icon-starred"/>	     
+		Abbott Audi... - Pancoe Life S...
+	    </a>
+	  </li>
+	</ul>
+      </div><!-- end starred-place-starred -->
+    </div><!-- end content -->
+    <div  data-id="places-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="places-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#" data-icon="custom" class="tabbar-star ui-btn-active ui-state-persist">Starred Places</a></li>
+	  <li><a href="#recent-places" data-transition="none" data-icon="custom" class="tabbar-recent ui-state-persist">Recent Places</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+    <div class="menu-page-mask hidden">
+      <img src="images/menu-back.png" alt="back" />
+    </div>
+  </div><!--end starred-places-->
+  
+  
+  <!-- recent-places page -->
+  <div data-role="page"  id="recent-places">
+    <div data-role="header" data-position="fixed">
+      <a href="#" class="showMenu">Menu</a>      
+      <h1>Recent Places</h1>      
+      <a id="recent-places-btn-edit" href="#" onclick="editList(this.id, 'recent-place-recent');">Edit</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="recent-place-recent">	
+	<ul class="list lst-route list-route-recent" data-role="listview"  id="lst-search-route-starred">
+	   <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#" class="lst-place-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">10 <br>hr</div>
+	      	M128 - Technological Institute		
+	    </a>
+	  </li>	     
+	  <li>
+	    <span class="lst-item-deleting-btn"></span>
+	    <div class="lst-item-delete-btn"></div>
+	    <a href="#" class="lst-place-content">
+	      <img alt="starred" src="images/list-recent.png" class="ui-li-icon lst-icon lst-icon-recent"/>
+	      <div class="lst-recent-date">Jan <br>4</div>
+	      	Abbott Audi... - Pancoe Life S...	
+	    </a>	    
+	  </li>
+	</ul>
+      </div><!-- end recent-place-recent -->    
+    </div><!-- end content -->
+    <div data-id="places-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div data-id="places-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#starred-places" data-transition="none" data-icon="custom" class="tabbar-star ui-state-persist">Starred Places</a></li>
+	  <li><a href="#"  data-icon="custom" class="tabbar-recent ui-btn-active ui-state-persist">Recent Places</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+    <div class="menu-page-mask hidden">
+      <img src="images/menu-back.png" alt="back" />
+    </div>
+  </div><!--end recent places-->
 </body>
 </html>

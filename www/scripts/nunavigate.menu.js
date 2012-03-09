@@ -6,6 +6,7 @@ $(document).bind("mobileinit",
 var menuStatus;
 const NU_EVANSTON = "42.0575,-87.6755";
 var overflow =  document.documentElement.style.overflow;
+
 function toggleMenu() {
     
             if(menuStatus != true){
@@ -14,11 +15,12 @@ function toggleMenu() {
                       // request the device's current position 
                     navigator.geolocation.getCurrentPosition(geoMenuSuccess, geoMenuFailure);
                 }
+                
                 $(".ui-page-active").animate({
                         left: "260px",
                   }, 300, function(){
                     menuStatus = true;
-                    overflow =  document.documentElement.style.overflow;
+                    //overflow =  document.documentElement.style.overflow;
                     document.documentElement.style.overflow = 'hidden';
                     $(".ui-page-active").addClass("menu-active");
                     $(".ui-page-active").removeClass("menu-inactive");
@@ -30,7 +32,7 @@ function toggleMenu() {
                     $(".ui-page-active").animate({
                     left: "-260px",
                     }, 300, function(){
-                      document.documentElement.style.overflow = overflow;
+                      //document.documentElement.style.overflow = overflow;
                       menuStatus = false;
                       $(".ui-page-active").addClass("menu-inactive");
                       $(".ui-page-active").removeClass("menu-active");
@@ -53,9 +55,25 @@ function toggleMenu() {
 
 $(function(){
     // Show menu
-    $("a.showMenu").click(toggleMenu);
-    $("div.menu-page-mask").click(toggleMenu);
+    $("a.showMenu").click(function() {toggleMenu()});
+    $("div.menu-page-mask").click(function() {toggleMenu()});
     navigator.geolocation.getCurrentPosition(geoMenuSuccess, geoMenuFailure);
+    
+    $("#menu li a").click(
+        function(){
+            $(".menu-page-mask").addClass("hidden");
+            $(".ui-page").addClass("menu-inactive");
+            $(".ui-page").removeClass("menu-active");
+            menuStatus = false;
+            var p = $(this).parent();
+            if($(p).hasClass('active')){
+                    $("#menu li").removeClass('active');
+            } else {
+                    $("#menu li").removeClass('active');
+                    $(p).addClass('active');
+            }
+    });
+
 /*
 
     $('#menu, .pages').live("swipeleft", function(){

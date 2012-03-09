@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta charset="utf-8">
+
+  <!-- iPad/iPhone specific css below, add after your main css >
+  <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />
+   <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="css/iphone.css" type="text/css" />
+  -->
+ 		
+  
+  <!-- If your application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+  <!-- Frameworks -->
+  <link rel="stylesheet" href="frameworks/jquery/jquery.mobile.css" />
+  <script type="text/javascript" charset="utf-8" src="frameworks/phonegap-1.4.1.js"></script>
+  <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.js"></script>
+  <script type="text/javascript" charset="utf-8" src="frameworks/jquery/jquery.mobile.js"></script>
+  <script type="text/javascript" charset="utf-8" src="frameworks/slides.min.jquery.js"></script>
+  <!-- End Frameworks -->
+  <link rel="stylesheet" href="css/iphone.css" type="text/css" />
+  <link rel="stylesheet" href="css/menu.css" />
+  <link rel="stylesheet" href="css/slides.css" />
+  <link rel="stylesheet" href="css/default.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.custom.css" />
+  <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.menu.js"></script>
+  <script type="text/javascript" charset="utf-8" src="scripts/nunavigate.js"></script>
+  <script type="text/javascript">
+    // If you want to prevent dragging, uncomment this section
+    /*
+    function preventBehavior(e)  { 
+      e.preventDefault(); 
+    };
+    
+    document.addEventListener("touchmove", preventBehavior, false);
+    */
+	
+    /* If you are supporting your own protocol, the var invokeString will contain any arguments to the app launch.
+     see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
+     for more details -jm
+    */
+    
+    /*
+    function handleOpenURL(url){
+      // TODO: do something with the url passed in.
+    }
+    */
+	
+    function onBodyLoad(){
+          console.log('a');
+      $('#card-view').on('pageshow',function (event, ui) {
+	var previousPage = ui.prevPage;
+	//var previousPage = $('.ui-prevPage');
+	var pPageId = previousPage.attr('id');
+	$('.btn-nav-back').attr('href','#'+pPageId);
+      });
+      $("#slides").slides({
+	animationComplete: function(current) {
+	  //console.log(current);
+		if(current == 1){
+		  //console.log($('.prev'));
+		  $('.prev').addClass('hidden');
+		  $('.next').removeClass('hidden');
+		}
+		else if(current == 4){
+		  //console.log($('.prev'));
+		  $('.prev').removeClass('hidden');
+		  $('.next').addClass('hidden');
+		}
+		else{
+		  //console.log($('.prev'));
+		  $('.prev').removeClass('hidden');
+		  $('.next').removeClass('hidden');
+		}
+	},
+	bigTarget : true
+      });
+      //document.addEventListener("deviceready", onDeviceReady, false);
+    }
+	
+    /* When this function is called, PhoneGap has been initialized and is ready to roll */
+    /* If you are supporting your own protocol, the var invokeString will contain any arguments to the app launch.
+      see http://iphonedevelopertips.com/cocoa/launching-your-own-application-via-a-custom-url-scheme.html
+      for more details -jm */
+    function onDeviceReady(){
+      
+    }
+    
+    
+  </script>
+</head>
+<body onload="onBodyLoad()">
+    <!-- card-view page -->
+  <div data-role="page" id="card-view">
+    
+    <div data-role="header" data-position="fixed" data-id="navi-header">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Card View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <div id="slides">
+	<div class="slides_container">
+	  <div class="slide">
+	    <a href="#">
+	      <img src="img/slide-1.jpg" width="270" height="320" alt="Slide 1">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>Happy Bokeh Thursday!</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="img/slide-2.jpg" width="270" height="320" alt="Slide 2">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>Happy Bokeh d!</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="img/slide-3.jpg" width="270" height="320" alt="Slide 3">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>Happy Bokeh d!</p>
+	    </div>
+	  </div>
+	  <div class="slide">
+	    <a href="#">
+	      <img src="img/slide-4.jpg" width="270" height="320" alt="Slide 4">
+	    </a>
+	    <div class="caption" style="bottom:0">
+	      <p>Happy Bokeh d!</p>
+	    </div>
+	  </div>
+	</div>
+	<a href="#" class="prev hidden"><img src="img/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
+	<a href="#" class="next"><img src="img/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+      </div>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-card ui-btn-active ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera View</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- list-view page -->
+  <div data-role="page" id="list-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>List View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      <ul class="list" data-role="listview"  id="lst-alt-route">
+	<li>
+	  1. Walk straight, take the 2nd left.
+	</li>
+        <li>
+	   2. Take the stairs to the 1st floor.
+	</li>
+        <li>
+	   3. Walk straight to find Abott Auditorium on your left.
+	</li>
+       </ul>
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-list ui-btn-active ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera View</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- map-view page -->
+  <div data-role="page" id="map-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Map View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list  ui-state-persist">List View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-map ui-btn-active ui-state-persist">Map View</a></li>
+	  <li><a href="#camera-view" data-transition="none" data-icon="custom" class="tabbar-camera ui-state-persist">Camera View</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+  <!-- camera-view page -->
+  <div data-role="page" id="camera-view" data-id="navi-header">
+    <div data-role="header" data-position="fixed">
+      <a href="#" data-transition="reverse slide" class='btn-nav-back'>Back</a>
+      <h1>Camera View</h1>
+      <a href="#search-route" data-transition="fade" >Got it!</a>
+    </div><!-- end header -->
+    <div data-role="content" class="data-content">
+      
+    </div><!-- end content -->
+    <div  data-id="routes-footer" data-role="footer" class="nav-glyphish-example" data-position="fixed">		
+      <div  data-id="routes-footer-nav" data-role="navbar" class="nav-glyphish-example">
+	<ul>
+	  <li><a href="#card-view" data-transition="none" data-icon="custom" class="tabbar-card ui-state-persist">Card View</a></li>
+	  <li><a href="#list-view" data-transition="none" data-icon="custom" class="tabbar-list  ui-state-persist">List View</a></li>
+	  <li><a href="#map-view" data-transition="none" data-icon="custom" class="tabbar-map ui-state-persist">Map View</a></li>
+	  <li><a href="#" data-transition="none" data-icon="custom" class="tabbar-camera ui-btn-active ui-state-persist">Camera View</a></li>
+	</ul>
+      </div><!-- /navbar -->
+    </div><!-- /footer -->
+  </div>
+  
+</body>
+</html>

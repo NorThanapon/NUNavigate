@@ -2,6 +2,7 @@
 .menu-active {
     margin-left: 260px !important;
     left: 0px !important;
+    overflow:hidden !important;
 }
 
 .menu-inactive {
@@ -12,6 +13,12 @@
     padding:5px;
 }
 
+.ui-page {
+    min-height:460px;
+}
+
+/* list item */
+
 .list {
     margin:0 !important;
 }
@@ -20,6 +27,90 @@
     border-radius: .3em;
     margin-top:6px;
     border: solid 1px #AAA;
+    -webkit-transition: all 0.4s;
+}
+
+.list li lst-item-deleting-btn {
+    display:none;
+}
+
+.list li lst-item-delete-btn {
+    display:none;
+}
+
+.list li.list-item-editing {
+    margin-left:35px;
+}
+
+.list li.list-item-editing .lst-item-deleting-btn,
+.list li.list-item-deleting .lst-item-deleting-btn{
+    display:block;
+    float:left;
+    position:absolute;
+    left:-35px;
+    top:5px;
+    width:30px;
+    height:30px;
+    background-repeat:no-repeat;
+}
+
+
+.list li.list-item-editing .lst-item-deleting-btn {
+    background-image:url(../images/minus.png);
+}
+
+.list li.list-item-editing .lst-item-delete-btn{
+    display:none;
+}
+
+.list li.list-item-deleting {
+    margin-left:35px;
+}
+
+.list li.list-item-deleting .lst-item-deleting-btn {
+    
+    background-image:url(../images/minus_v.png);
+}
+
+.list li.list-item-deleting .lst-item-delete-btn {
+    display:block;
+    float:right;
+    width:63px;
+    height:34px;
+    margin-top:3px;
+    margin-right:5px;
+    background-image:url(../images/delete.png);
+    background-repeat:no-repeat;
+}
+
+.list li.list-item-deleting .lst-route-stat{
+    display:none;
+}
+
+.list-route-recent li.list-item-deleting,
+.list-route-recent li.list-item-editing{
+    background-image:url(../images/list-star.png);
+    background-repeat:no-repeat;
+    background-position: left center;
+}
+
+.list-route-recent li.list-item-deleting,
+.list-route-recent li.list-item-editing{
+    background-image:url(../images/list-star.png);
+    background-repeat:no-repeat;
+}
+
+.list-route-recent li.list-recent-starred {
+    background-image:url(../images/list-recent-starred2.png) !important;
+    background-repeat:no-repeat;
+    background-position: left center;
+
+}
+
+.list-route-recent li.list-item-deleting .lst-recent-date,
+.list-route-recent li.list-item-editing .lst-recent-date{
+    display:none;
+    
 }
 
 .lst-icon {
@@ -43,6 +134,20 @@ a.lst-route-content {
     font-size:11pt !important;
 }
 
+a.lst-place-content {
+    padding-top:2px !important;
+    padding-bottom:2px !important;
+    padding-right: 30px !important;
+    height:38px;
+    line-height:260%;
+    font-weight:500 !important;
+    color: #222 !important;
+    font-size:11pt !important;
+}
+a.lst-place-content .lst-recent-date {
+    line-height:130% !important;
+}
+
 .icon-inline {
     vertical-align:text-bottom;
     display:inline;
@@ -58,6 +163,7 @@ a.lst-route-content {
     width:30px;
 }
 
+
 .lst-route-stat {
     position:absolute;
     display:block;
@@ -70,20 +176,11 @@ a.lst-route-content {
     margin:0;
 }
 
-.menu-page-mask {
-    position:absolute;
-    top:0;
-    padding-left:20px;
-    width:70px;
-    height:100%;
-    z-index:1000;
-    background-color:rgba(0,0,0,0.7);
-    line-height:460px;
-    vertical-align:middle;
-}
+/* end list item */
+
 
 .hidden {
-    display:none;
+    display:none !important;
 }
 
 #search-route-panel{
@@ -131,3 +228,100 @@ a.lst-route-content {
 }
 
 
+
+/* tabbar (footer) */
+
+.nav-glyphish-example .ui-btn .ui-btn-inner { 
+    padding-top: 33px !important;    
+} 
+ 
+.nav-glyphish-example .ui-btn .ui-icon {  
+    width: 45px!important;  
+    height: 35px!important;  
+    box-shadow: none!important;  
+    -moz-box-shadow: none!important;  
+    -webkit-box-shadow: none!important; 
+    -webkit-border-radius: none !important; 
+    border-radius: none !important;
+    margin-left:-10px !important;
+    background-color:transparent !important;
+} 
+ 
+.tabbar-star .ui-icon {
+    background-image: url(../images/28-star.png); 
+} 
+ 
+.tabbar-recent .ui-icon {
+    background-image: url(../images/11-clock.png); 
+} 
+
+.tabbar-map .ui-icon {
+    background-image: url(../images/103-map.png); 
+} 
+ 
+.tabbar-card .ui-icon {
+    background-image: url(../images/42-photos.png); 
+} 
+.tabbar-list .ui-icon {
+    background-image: url(../images/179-notepad.png); 
+} 
+ 
+.tabbar-camera .ui-icon {
+    background-image: url(../images/86-camera.png); 
+} 
+/* end tabbar (footer) */
+
+#select-route-desc{
+    padding:5px;
+    background-color:transparent;
+    color:#333;
+    text-shadow:none;
+    font-size:small;
+    border-radius: .3em;
+    margin-top:6px;
+    border: solid 1px #AAA;
+    background-image: -webkit-linear-gradient(#FDFDFD /*{c-bup-background-start}*/, #EEE /*{c-bup-background-end}*/);
+
+}
+
+#select-route-desc .ui-block-a{
+    width:30px;
+    text-align:right;
+}
+#select-route-desc .ui-block-b{
+    padding-left:5px;
+    width:280px;
+    font-weight:bold;
+}
+
+#select-route-inst {
+    margin-top:0px;
+}
+
+#alt-num-routes{
+    font-weight:bold;
+    color:#1A5CA3;
+}
+
+.lst-alt-num {
+    display:inline-block;
+    width:40px;
+    text-align:left;
+    font-weight:normal;
+    color:#1A5CA3;
+}
+
+.lst-alt-detail {
+    font-weight:normal;
+}
+
+#map-image {
+    overflow:scroll !important;
+}
+
+#camera-content {
+    width:100%;
+    height: 350px;
+    overflow:hidden !important;
+    border:1px solid black;
+}
